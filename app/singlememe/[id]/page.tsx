@@ -14,9 +14,7 @@ interface SingleMeme {
     }
 }
 const SingleMeme = (props: SingleMeme) => {
-    console.log(props.searchParams);
     const [returnedMeme,SetReturnedMeme] = useState<string | null>(null);
-    console.log(props.searchParams.box_count);
     const text1 = useRef<HTMLInputElement | null>(null);
     const text2 = useRef<HTMLInputElement | null>(null);
     const text3 = useRef<HTMLInputElement | null>(null);
@@ -33,9 +31,7 @@ const SingleMeme = (props: SingleMeme) => {
         const singleMemeReq = await fetch(apiToHit, {
             method: 'POST'
         })
-        console.log(apiToHit);
         const generatedMeme = await singleMemeReq.json()
-        console.log(generatedMeme);
         generatedMeme.data.url ? SetReturnedMeme(generatedMeme.data.url) : null
     }
     return (
