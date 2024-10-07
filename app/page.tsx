@@ -34,7 +34,7 @@ const Home = async () => {
                 <Link href={{
                   pathname: `/singlememe/${item.id}`,
                   query: {
-                    id : item.id,
+                    memeId : item.id,
                     img: item.url,
                     name: item.name,
                     box_count: item.box_count,

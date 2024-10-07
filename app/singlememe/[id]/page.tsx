@@ -4,7 +4,7 @@ import React, { useRef, useState } from 'react'
 
 interface SingleMeme {
     searchParams: {
-        id: string,
+        memeId: string,
         img: string,
         name: string,
         height: number,
@@ -25,7 +25,7 @@ const SingleMeme = (props: SingleMeme) => {
     const text6 = useRef<HTMLInputElement | null>(null);
     const refArr = [text1, text2, text3, text4, text5, text6];
     const generateMeme = async () => {
-        let apiToHit = `https://api.imgflip.com/caption_image?template_id=${props.searchParams.id}&username=shahzaibalijamro&password=Iwasbornon29072006`
+        let apiToHit = `https://api.imgflip.com/caption_image?template_id=${props.searchParams.memeId}&username=shahzaibalijamro&password=Iwasbornon29072006`
         for (let i = 0; i < props.searchParams.box_count; i++) {
             apiToHit += `&text${i}=${refArr[i].current!.value}`;
             refArr[i].current!.value = '';
