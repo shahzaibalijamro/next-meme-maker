@@ -33,7 +33,7 @@ const SingleMeme = (props: SingleMeme) => {
             method: 'POST'
         })
         const generatedMeme = await singleMemeReq.json()
-        SetReturnedMeme(generatedMeme.data.url)
+        generatedMeme.data.url ? SetReturnedMeme(generatedMeme.data.url) : null
         console.log(generatedMeme);
     }
     return (
