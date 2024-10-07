@@ -14,7 +14,7 @@ interface SingleMeme {
     }
 }
 const SingleMeme = (props: SingleMeme) => {
-    const [returnedMeme,SetReturnedMeme] = useState(null);
+    const [returnedMeme,SetReturnedMeme] = useState<string | null>(null);
     console.log(props.searchParams.box_count);
     const text1 = useRef<HTMLInputElement | null>(null);
     const text2 = useRef<HTMLInputElement | null>(null);
@@ -43,14 +43,14 @@ const SingleMeme = (props: SingleMeme) => {
             <div className='flex justify-around flex-wrap gap-10 items-center'>
                 <div className='flex flex-col justify-center w-full max-w-[400px] items-center'>
                 <h1 className='text-2xl font-semibold mb-4'>Meme Template</h1>
-                    <Image src={props.searchParams.img} width={320} height={320} alt={props.searchParams.name} />
+                    <Image src={props.searchParams.img} width={320} height={320} alt={props.searchParams.name} priority/>
                 </div>
                 <div className='text-center max-w-[400px] w-full my-6'>
                     {Array.from({ length: props.searchParams.box_count }).map((_, index) => {
                         return <div key={index}>
                             <div className="input-group">
                                 <label className="label">Text {index + 1}</label>
-                                <input autoComplete="off" name="Email" id="Email" className="input" placeholder={`Enter text ${index + 1}`} type="email" ref={refArr[index]} />
+                                <input autoComplete="off" name={`text${index + 1}`} id={`text${index + 1}`} className="input" placeholder={`Enter text ${index + 1}`} type="text" ref={refArr[index]} />
                                 <div></div></div>
                         </div>
                     })}
