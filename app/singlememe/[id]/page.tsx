@@ -33,8 +33,8 @@ const SingleMeme = (props: SingleMeme) => {
             method: 'POST'
         })
         const generatedMeme = await singleMemeReq.json()
-        generatedMeme.data.url ? SetReturnedMeme(generatedMeme.data.url) : null
         console.log(generatedMeme);
+        generatedMeme.data.url ? SetReturnedMeme(generatedMeme.data.url) : null
     }
     return (
         <div className='my-container'>
