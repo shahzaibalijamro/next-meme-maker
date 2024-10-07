@@ -14,6 +14,7 @@ interface SingleMeme {
     }
 }
 const SingleMeme = (props: SingleMeme) => {
+    console.log(props.searchParams);
     const [returnedMeme,SetReturnedMeme] = useState<string | null>(null);
     console.log(props.searchParams.box_count);
     const text1 = useRef<HTMLInputElement | null>(null);
