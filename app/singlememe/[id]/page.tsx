@@ -32,6 +32,7 @@ const SingleMeme = (props: SingleMeme) => {
         const singleMemeReq = await fetch(apiToHit, {
             method: 'POST'
         })
+        console.log(apiToHit);
         const generatedMeme = await singleMemeReq.json()
         console.log(generatedMeme);
         generatedMeme.data.url ? SetReturnedMeme(generatedMeme.data.url) : null
