@@ -18,8 +18,8 @@ const Home = async () => {
   const memeRes = await memeReq.json()
   return (
     <div className='my-container'>
-      <h1 className='font-semibold text-3xl mt-8 mb-12 text-black text-center'><span className='me-2'>&#128516;</span>Meme Maker</h1>
-      <div className='flex justify-center items-center gap-8 flex-wrap'>
+      <h1 className='font-semibold text-3xl mt-8 text-black text-center'><span className='me-2'>&#128516;</span>Meme Maker</h1>
+      <div className='flex justify-center my-12 items-center gap-8 flex-wrap'>
         {memeRes.data.memes.map((item: Meme) => {
           return item.box_count < 3 && <div key={item.id} className="card card-compact bg-base-100 w-72 shadow-xl">
           <div style={{
