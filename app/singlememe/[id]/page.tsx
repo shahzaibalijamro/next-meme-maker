@@ -31,6 +31,15 @@ const SingleMeme = (props: SingleMeme) => {
         text1.current.value = ''
         text2.current.value = ''
     }
+    const downloadMeme = () => {
+        if (!returnedMeme) return;
+        const link = document.createElement('a');
+        link.href = returnedMeme;
+        link.download = `meme-${props.searchParams.name}.jpg`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
     return (
         <div className='my-container'>
             <h1 className='font-semibold text-3xl mt-8 mb-12 text-black text-center'><span className='me-2'>&#128516;</span>{props.searchParams.name}
@@ -58,6 +67,7 @@ const SingleMeme = (props: SingleMeme) => {
                     {returnedMeme && !loading && <>
                         <h1 className='text-2xl font-semibold mt-12 mb-6'>Result</h1>
                         <Image priority={true} src={returnedMeme} width={300} height={300} alt={props.searchParams.name} />
+                        <button className='btn btn-warning mt-6' onClick={generateMeme}>Generate</button>
                     </>}
                     {/* //no request has been made */}
                     {!returnedMeme && !loading && <>
