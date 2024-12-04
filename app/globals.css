@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* .max-w-full{
-    max-width: 80% !important;
-} */
-
 .my-container {
     max-width: 1300px !important;
     margin: 0 auto !important;

@@ -12,9 +12,9 @@ const Home = async () => {
     box_count: number,
     captions: number
   }
-  const memeReq = await fetch("https://api.imgflip.com/get_memes",{
+  const memeReq = await fetch("https://api.imgflip.com/get_memes", {
     cache: 'no-store'
-})
+  })
   const memeRes = await memeReq.json()
   return (
     <div className='my-container'>
@@ -22,32 +22,32 @@ const Home = async () => {
       <div className='flex justify-center my-12 items-center gap-8 flex-wrap'>
         {memeRes.data.memes.map((item: Meme) => {
           return item.box_count < 3 && <div key={item.id} className="card card-compact bg-base-100 w-72 shadow-xl">
-          <div style={{
-            borderTopLeftRadius: '18px',
-            borderTopRightRadius: '18px'
-          }} className='flex justify-center bg-[#e9e9e9] items-center'>
-            <Image className='h-[200px]' src={item.url} width={200} height={200} alt='item.name' />
-          </div>
-          <div className="card-body">
-            <h2 className="card-title whitespace-nowrap overflow-hidden text-ellipsis max-w-full inline-block">{item.name}</h2>
-            <div className="card-actions flex justify-center">
-              <Link href={{
-                pathname: `/singlememe/${item.id}`,
-                query: {
-                  memeId : item.id,
-                  img: item.url,
-                  name: item.name,
-                  box_count: item.box_count,
-                  captions: item.captions
-                }
-              }}>
-                <button className="Btn text-white btn-primary p-0">
-                Generate
-                </button>
-              </Link>
+            <div style={{
+              borderTopLeftRadius: '18px',
+              borderTopRightRadius: '18px'
+            }} className='flex justify-center bg-[#e9e9e9] items-center'>
+              <Image className='h-[200px]' src={item.url} width={200} height={200} alt='item.name' />
+            </div>
+            <div className="card-body">
+              <h2 className="card-title whitespace-nowrap overflow-hidden text-ellipsis max-w-full inline-block">{item.name}</h2>
+              <div className="card-actions flex justify-center">
+                <Link href={{
+                  pathname: `/singlememe/${item.id}`,
+                  query: {
+                    memeId: item.id,
+                    img: item.url,
+                    name: item.name,
+                    box_count: item.box_count,
+                    captions: item.captions
+                  }
+                }}>
+                  <button className="Btn text-white btn-primary p-0">
+                    Generate
+                  </button>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
         })}
       </div>
     </div>

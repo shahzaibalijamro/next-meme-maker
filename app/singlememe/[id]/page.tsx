@@ -14,25 +14,22 @@ interface SingleMeme {
     }
 }
 const SingleMeme = (props: SingleMeme) => {
-    const [returnedMeme,SetReturnedMeme] = useState<string | null>(null);
+    const [returnedMeme, SetReturnedMeme] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(false)
     const text1 = useRef<HTMLInputElement | null>(null);
     const text2 = useRef<HTMLInputElement | null>(null);
-    const text3 = useRef<HTMLInputElement | null>(null);
-    const text4 = useRef<HTMLInputElement | null>(null);
-    const text5 = useRef<HTMLInputElement | null>(null);
-    const text6 = useRef<HTMLInputElement | null>(null);
-    const refArr = [text1, text2, text3, text4, text5, text6];
     const generateMeme = async () => {
-        let apiToHit = `https://api.imgflip.com/caption_image?template_id=${props.searchParams.memeId}&username=shahzaibalijamro&password=Iwasbornon29072006`
-        for (let i = 0; i < props.searchParams.box_count; i++) {
-            apiToHit += `&text${i}=${refArr[i].current!.value}`;
-            refArr[i].current!.value = '';
-        }
-        const singleMemeReq = await fetch(apiToHit, {
+        if (!text1.current?.value || !text2.current?.value) return alert("Both text fields are required!");
+        setLoading(true);
+        let apiToHit = `https://api.imgflip.com/caption_image?template_id=${props.searchParams.memeId}&username=${process.env.USERNAME}&password=${process.env.PASSWORD}&text0=${text1.current?.value}&text1=${text2.current?.value}`
+        const response = await fetch(apiToHit, {
             method: 'POST'
         })
-        const generatedMeme = await singleMemeReq.json()
-        generatedMeme.data.url ? SetReturnedMeme(generatedMeme.data.url) : null
+        const generatedMeme = await response.json()
+        generatedMeme.data.url && SetReturnedMeme(generatedMeme.data.url)
+        setLoading(false)
+        text1.current.value = ''
+        text2.current.value = ''
     }
     return (
         <div className='my-container'>
@@ -40,27 +37,36 @@ const SingleMeme = (props: SingleMeme) => {
             </h1>
             <div className='flex justify-around flex-wrap gap-10 items-center'>
                 <div className='flex flex-col justify-center w-full max-w-[400px] items-center'>
-                <h1 className='text-2xl font-semibold mb-4'>Meme Template</h1>
-                    <Image src={props.searchParams.img} width={320} height={320} alt={props.searchParams.name} priority/>
+                    <h1 className='text-2xl font-semibold mb-4'>Meme Template</h1>
+                    <Image priority={true} src={props.searchParams.img} width={320} height={320} alt={props.searchParams.name} />
                 </div>
                 <div className='text-center max-w-[400px] w-full my-6'>
-                    {Array.from({ length: props.searchParams.box_count }).map((_, index) => {
-                        return <div key={index}>
-                            <div className="input-group">
-                                <label className="label">Text {index + 1}</label>
-                                <input autoComplete="off" name={`text${index + 1}`} id={`text${index + 1}`} className="input" placeholder={`Enter text ${index + 1}`} type="text" ref={refArr[index]} />
-                                <div></div></div>
+                    <div className="input-group">
+                        <label className="label">Text 1</label>
+                        <input autoComplete="off" name={`text1`} id={`text1`} className="input" placeholder={`Enter text 1`} type="text" ref={text1} />
+                        <div>
                         </div>
-                    })}
+                    </div>
+                    <div className="input-group">
+                        <label className="label">Text 2</label>
+                        <input autoComplete="off" name={`text2`} id={`text2`} className="input" placeholder={`Enter text 2`} type="text" ref={text2} />
+                        <div></div></div>
                     <button className='btn btn-warning mt-6' onClick={generateMeme}>Generate</button>
                 </div>
                 <div className='flex flex-col justify-center mb-10 w-full max-w-[400px] items-center'>
-                    {returnedMeme ? 
-                    <>
-                    <h1 className='text-2xl font-semibold mt-12 mb-6'>Result</h1>
-                    <Image src={returnedMeme} width={300} height={300} alt={props.searchParams.name} />
-                    </>
-                    : null}
+                    {/* meme has been generated */}
+                    {returnedMeme && !loading && <>
+                        <h1 className='text-2xl font-semibold mt-12 mb-6'>Result</h1>
+                        <Image priority={true} src={returnedMeme} width={300} height={300} alt={props.searchParams.name} />
+                    </>}
+                    {/* //no request has been made */}
+                    {!returnedMeme && !loading && <>
+                        <h1 className='text-2xl font-semibold mt-12 mb-6'>Your generated Meme will show here!</h1>
+                    </>}
+                    {/* //meme is currently being generated */}
+                    {!returnedMeme && loading && <>
+                        <h1 className='text-2xl font-semibold mt-12 mb-6'>Generating....</h1>
+                    </>}
                 </div>
             </div>
         </div>
