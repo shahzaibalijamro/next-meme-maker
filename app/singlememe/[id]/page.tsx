@@ -21,24 +21,32 @@ const SingleMeme = (props: SingleMeme) => {
     const generateMeme = async () => {
         if (!text1.current?.value || !text2.current?.value) return alert("Both text fields are required!");
         setLoading(true);
-        let apiToHit = `https://api.imgflip.com/caption_image?template_id=${props.searchParams.memeId}&username=${process.env.NEXT_PUBLIC_USERNAME}&password=${process.env.NEXT_PUBLIC_PASSWORD}&text0=${text1.current?.value}&text1=${text2.current?.value}`
-        const response = await fetch(apiToHit, {
-            method: 'POST'
-        })
-        const generatedMeme = await response.json()
-        generatedMeme.data.url && SetReturnedMeme(generatedMeme.data.url)
+        try {
+            let apiToHit = `https://api.imgflip.com/caption_image?template_id=${props.searchParams.memeId}&username=${process.env.NEXT_PUBLIC_USERNAME}&password=${process.env.NEXT_PUBLIC_PASSWORD}&text0=${text1.current?.value}&text1=${text2.current?.value}`
+            const response = await fetch(apiToHit, {
+                method: 'POST'
+            })
+            const generatedMeme = await response.json()
+            generatedMeme.data.url && SetReturnedMeme(generatedMeme.data.url)
+        } catch (error) {
+            alert(error)
+        }
         setLoading(false)
         text1.current.value = ''
         text2.current.value = ''
     }
-    const downloadMeme = () => {
+    const downloadMeme = async () => {
         if (!returnedMeme) return;
+        const response = await fetch(returnedMeme, { method: 'GET' });
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
         const link = document.createElement('a');
-        link.href = returnedMeme;
-        link.download = `meme-${props.searchParams.name}.jpg`;
+        link.href = url;
+        link.download = `${props.searchParams.name}.jpg`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        URL.revokeObjectURL(url);
     };
     return (
         <div className='my-container'>
@@ -67,7 +75,7 @@ const SingleMeme = (props: SingleMeme) => {
                     {returnedMeme && !loading && <>
                         <h1 className='text-2xl font-semibold mt-12 mb-6'>Result</h1>
                         <Image priority={true} src={returnedMeme} width={300} height={300} alt={props.searchParams.name} />
-                        <button className='btn btn-warning mt-6' onClick={generateMeme}>Generate</button>
+                        <button className='btn btn-warning mt-6' onClick={downloadMeme}>Download</button>
                     </>}
                     {/* //no request has been made */}
                     {!returnedMeme && !loading && <>
