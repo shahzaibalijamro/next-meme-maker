@@ -21,7 +21,7 @@ const SingleMeme = (props: SingleMeme) => {
     const generateMeme = async () => {
         if (!text1.current?.value || !text2.current?.value) return alert("Both text fields are required!");
         setLoading(true);
-        let apiToHit = `https://api.imgflip.com/caption_image?template_id=${props.searchParams.memeId}&username=${process.env.USERNAME}&password=${process.env.PASSWORD}&text0=${text1.current?.value}&text1=${text2.current?.value}`
+        let apiToHit = `https://api.imgflip.com/caption_image?template_id=${props.searchParams.memeId}&username=${process.env.NEXT_PUBLIC_USERNAME}&password=${process.env.NEXT_PUBLIC_PASSWORD}&text0=${text1.current?.value}&text1=${text2.current?.value}`
         const response = await fetch(apiToHit, {
             method: 'POST'
         })
